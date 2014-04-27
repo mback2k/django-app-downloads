@@ -5,32 +5,32 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
 class Commit(models.Model):
-    revision = models.CharField(_('revision'), max_length=40)
-    comments = models.TextField(_('comments'))
+    revision = models.CharField(_('Revision'), max_length=40)
+    comments = models.TextField(_('Comments'))
 
-    crdate = models.DateTimeField(_('date created'), auto_now_add=True)
-    tstamp = models.DateTimeField(_('date edited'), auto_now=True)
+    crdate = models.DateTimeField(_('Date created'), auto_now_add=True)
+    tstamp = models.DateTimeField(_('Date edited'), auto_now=True)
 
     def __unicode__(self):
         return self.description
 
 class Build(models.Model):
     commit = models.ForeignKey(Commit)
-    number = models.IntegerField(_('number'))
-    builder = models.CharField(_('builder'), max_length=50)
+    number = models.IntegerField(_('Number'))
+    builder = models.CharField(_('Builder'), max_length=50)
 
-    crdate = models.DateTimeField(_('date created'), auto_now_add=True)
-    tstamp = models.DateTimeField(_('date edited'), auto_now=True)
+    crdate = models.DateTimeField(_('Date created'), auto_now_add=True)
+    tstamp = models.DateTimeField(_('Date edited'), auto_now=True)
 
     def __unicode__(self):
         return u'%s:%d' % (self.builder, self.number)
 
 class Tag(models.Model):
     commit = models.ForeignKey(Commit)
-    name = models.CharField(_('name'), max_length=50)
+    name = models.CharField(_('Name'), max_length=50)
 
-    crdate = models.DateTimeField(_('date created'), auto_now_add=True)
-    tstamp = models.DateTimeField(_('date edited'), auto_now=True)
+    crdate = models.DateTimeField(_('Date created'), auto_now_add=True)
+    tstamp = models.DateTimeField(_('Date edited'), auto_now=True)
 
     def __unicode__(self):
         return self.name
