@@ -8,6 +8,6 @@ from django.contrib import messages
 from .models import User, Commit, Build, Tag
 
 def show_downloads(request):
-    template_values = {}
-
-    return render_to_response('show_home.html', template_values, context_instance=RequestContext(request))
+    #template_values = {}
+    #return render_to_response('show_home.html', template_values, context_instance=RequestContext(request))
+    return HttpResponseRedirect(reverse('software:show_home'))
