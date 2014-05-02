@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from .models import Commit, Build, Tag
+from .models import Application, Flavor, Version
 
-class CommitAdmin(admin.ModelAdmin):
+class ApplicationAdmin(admin.ModelAdmin):
     pass
 
-class BuildAdmin(admin.ModelAdmin):
+class FlavorAdmin(admin.ModelAdmin):
     pass
 
-class TagAdmin(admin.ModelAdmin):
+class VersionAdmin(admin.ModelAdmin):
     pass
 
-admin.site.register(Commit, CommitAdmin)
-admin.site.register(Build, BuildAdmin)
-admin.site.register(Tag, TagAdmin)
+admin.site.register(Application, ApplicationAdmin)
+admin.site.register(Flavor, FlavorAdmin)
+admin.site.register(Version, VersionAdmin)

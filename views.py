@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidde
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib import messages
-from .models import User, Commit, Build, Tag
+from .models import Application, Flavor, Version
 
 def show_downloads(request):
     #template_values = {}
