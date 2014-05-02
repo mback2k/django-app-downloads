@@ -8,6 +8,8 @@ from django.contrib import messages
 from .models import Application, Flavor, Version
 
 def show_downloads(request):
-    #template_values = {}
-    #return render_to_response('show_home.html', template_values, context_instance=RequestContext(request))
-    return HttpResponseRedirect(reverse('software:show_home'))
+    template_values = {
+        'applications': Application.objects,
+    }
+
+    return render_to_response('show_downloads.html', template_values, context_instance=RequestContext(request))

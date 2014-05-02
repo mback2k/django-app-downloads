@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block navigation %}
+  <li><a href="{% url 'software:show_home' %}" title="Home">Home</a></li>
+  <li class="active"><a href="{% url 'downloads:show_downloads' %}" title="Downloads">Downloads</a></li>
+  <li><a href="{% url 'comments:show_threads' 'discussion' %}" title="Discussions">Discussions</a></li>
+  <li><a href="{% url 'comments:show_threads' 'request' %}" title="Requests">Requests</a></li>
+  <li><a href="{% url 'comments:show_threads' 'issue' %}" title="Issues">Issues</a></li>
+  {{ block.super }}
+{% endblock %}
+
+{% block content %}
+  {% for application in applications.all %}
+  <hr />
+  <h3>{{ application.name }}</h3>
+  <div class="row">
+    {% include "includes/downloads.html" %}
+  </div>
+  {% endfor %}
+{% endblock %}
