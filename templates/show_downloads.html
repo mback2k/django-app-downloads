@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block title %}{{ block.super }} - Downloads{% endblock %}
+
 {% block navigation %}
   <li><a href="{% url 'software:show_home' %}" title="Home">Home</a></li>
   <li class="active"><a href="{% url 'downloads:show_downloads' %}" title="Downloads">Downloads</a></li>
