@@ -1,5 +1,5 @@
 {% load jdatetime %}
-<div class="panel panel-default{% if not version.stable %} panel-danger{% endif %}">
+<div class="panel panel-default{% if not version.stable %} panel-danger text-muted{% endif %}">
   <div class="panel-body">
     <p class="pull-right text-right"><small>
       Published on {{ version.date|localedatetime }}
