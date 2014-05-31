@@ -55,6 +55,11 @@ class Version(models.Model):
             download_url = os.path.join(self.flavor.download_path, build_number, urllib.quote(filename))
             return download_url
 
+        download_file = os.path.join(self.flavor.download_root, self.build.revision, build_number, filename)
+        if os.path.exists(download_file):
+            download_url = os.path.join(self.flavor.download_path, self.build.revision, build_number, urllib.quote(filename))
+            return download_url
+
         for change in self.build.changes.all():
             download_file = os.path.join(self.flavor.download_root, change.revision, build_number, filename)
             if os.path.exists(download_file):
