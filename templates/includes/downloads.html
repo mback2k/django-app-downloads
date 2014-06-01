@@ -1,8 +1,6 @@
-{% for flavor in application.flavors.all %}
-<div class="col-md-{% widthratio 12 application.flavors.count 1 %}">
+<div class="col-md-12">
   <h4>{{ flavor.name }}</h4>
   {% for version in flavor.versions.all %}
     {% include "includes/download.html" %}
   {% endfor %}
 </div>
-{% endfor %}

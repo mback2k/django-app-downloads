@@ -12,11 +12,9 @@
 {% endblock %}
 
 {% block content %}
-  {% for application in applications.all %}
   <hr />
   <h3>{{ application.name }}</h3>
   <div class="row">
     {% include "includes/downloads.html" %}
   </div>
-  {% endfor %}
 {% endblock %}
