@@ -11,32 +11,39 @@ from django.utils import timezone
 from .models import Application, Flavor, Version
 import os.path, datetime
 
-def show_downloads_latest(request):
+def show_downloads_latest(request, filter='stable'):
     application = Application.objects.get(id=settings.APPLICATION_ID)
     flavor = Flavor.objects.get(id=settings.FLAVOR_ID, application=application)
-    return application, flavor
+    versions = flavor.versions.all()
+    if filter == 'stable':
+        versions = versions.filter(stable=True)
+    elif filter == 'unstable':
+        versions = versions.filter(stable=False)
+    return application, flavor, versions
 
-def show_downloads_etag(request):
+def show_downloads_etag(request, filter='stable'):
     if len(messages.get_messages(request)):
         return None
     try:
-        application, flavor = show_downloads_latest(request)
+        application, flavor, versions = show_downloads_latest(request, filter)
         etag = '%d:%d:%d:%d' % (application.id,
                                 flavor.id,
-                                flavor.versions.count(),
-                                flavor.versions.latest('date').id)
+                                versions.count(),
+                                versions.latest('date').id)
         if request.user.is_authenticated():
             etag += ':%d' % request.user.id
+        if filter:
+            etag += ':%s' % filter
         return etag
     except Version.DoesNotExist, e:
         return None
 
-def show_downloads_last_modified(request):
+def show_downloads_last_modified(request, filter='stable'):
     if len(messages.get_messages(request)):
         return None
     try:
-        application, flavor = show_downloads_latest(request)
-        last_modified = max(flavor.versions.latest('date').date,
+        application, flavor, versions = show_downloads_latest(request, filter)
+        last_modified = max(versions.latest('date').date,
                             datetime.datetime.fromtimestamp(os.path.getmtime(__file__),
                                                             timezone.get_current_timezone()))
         if request.user.is_authenticated():
@@ -46,12 +53,14 @@ def show_downloads_last_modified(request):
         return None
 
 @condition(etag_func=show_downloads_etag, last_modified_func=show_downloads_last_modified)
-def show_downloads(request):
-    application, flavor = show_downloads_latest(request)
+def show_downloads(request, filter='stable'):
+    application, flavor, versions = show_downloads_latest(request, filter)
 
     template_values = {
         'application': application,
         'flavor': flavor,
+        'versions': versions,
+        'filter': filter,
     }
 
     return render_to_response('show_downloads.html', template_values, context_instance=RequestContext(request))

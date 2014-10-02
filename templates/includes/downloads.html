@@ -1,6 +1,11 @@
 <div class="col-md-12">
+  <div class="btn-group pull-right">
+    <a href="{% url 'downloads:show_downloads' %}" class="btn btn-primary{% if filter == 'stable'%} active{% endif %}" role="button" title="Show stable">Show stable</a>
+    <a href="{% url 'downloads:show_downloads' 'all' %}" class="btn btn-default{% if filter == 'all'%} active{% endif %}" role="button" title="Show all">Show all</a>
+    <a href="{% url 'downloads:show_downloads' 'unstable' %}" class="btn btn-default{% if filter == 'unstable'%} active{% endif %}" role="button" title="Show unstable">Show unstable</a>
+  </div>
   <h4>{{ flavor.name }}</h4>
-  {% for version in flavor.versions.all %}
+  {% for version in versions %}
     {% include "includes/download.html" %}
   {% endfor %}
 </div>
