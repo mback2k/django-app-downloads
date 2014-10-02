@@ -5,6 +5,12 @@
     <a href="{% url 'downloads:show_downloads' 'unstable' %}" class="btn btn-default{% if filter == 'unstable'%} active{% endif %}" role="button" title="Show unstable">Show unstable</a>
   </div>
   <h4>{{ flavor.name }}</h4>
+  {% if flavor.versions.first.id != versions.first.id %}
+  <div class="alert alert-info">
+    <strong>There are more recent versions available, than the {{ filter }} versions shown on this page.</strong><br />
+    Please <a href="{% url 'downloads:show_downloads' 'all' %}">click here</a> to take a look at all available versions.
+   </div>
+  {% endif %}
   {% for version in versions %}
     {% include "includes/download.html" %}
   {% endfor %}
