@@ -3,8 +3,11 @@ from django.conf import settings
 from .models import Application, Flavor
 
 def meta_software(request):
-    application = Application.objects.get(id=settings.APPLICATION_ID)
-    flavor = Flavor.objects.get(id=settings.FLAVOR_ID, application=application)
+    try:
+        application = Application.objects.get(id=settings.APPLICATION_ID)
+        flavor = Flavor.objects.get(id=settings.FLAVOR_ID, application=application)
+    except (Application.DoesNotExist, Flavor.DoesNotExist):
+        return {}
 
     main_version = flavor.versions.filter(stable=True).latest('date')
     beta_version = flavor.versions.latest('date')
