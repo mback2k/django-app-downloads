@@ -13,8 +13,5 @@
   {% endif %}
   {% for version in versions %}
     {% include "includes/download.html" %}
-    {% if flavor.versions.first.id == version.id %}
-    <hr />
-    {% endif %}
   {% endfor %}
 </div>
