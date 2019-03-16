@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.views.decorators.http import condition
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, Http404
 from django.template import RequestContext
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.utils import timezone
 from .models import Application, Flavor, Version
@@ -63,4 +63,4 @@ def show_downloads(request, filter='stable'):
         'filter': filter,
     }
 
-    return render_to_response('show_downloads.html', template_values, context_instance=RequestContext(request))
+    return render(request, 'show_downloads.html', template_values)
