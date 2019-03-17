@@ -35,7 +35,7 @@ def show_downloads_etag(request, filter='stable'):
         if filter:
             etag += ':%s' % filter
         return etag
-    except Version.DoesNotExist, e:
+    except Version.DoesNotExist:
         return None
 
 def show_downloads_last_modified(request, filter='stable'):
@@ -49,7 +49,7 @@ def show_downloads_last_modified(request, filter='stable'):
         if request.user.is_authenticated():
             last_modified = max(last_modified, request.user.last_login)
         return last_modified
-    except Version.DoesNotExist, e:
+    except Version.DoesNotExist:
         return None
 
 @condition(etag_func=show_downloads_etag, last_modified_func=show_downloads_last_modified)

@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from ..builds.models import Builder, Build
-import os.path, urllib
+import os.path, urllib.parse
 
 class Application(models.Model):
     name = models.CharField(_('Name'), max_length=50, unique=True)
@@ -11,7 +11,7 @@ class Application(models.Model):
     class Meta:
         ordering = ('name',)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 class Flavor(models.Model):
@@ -27,7 +27,7 @@ class Flavor(models.Model):
         ordering = ('name',)
         unique_together = ('application', 'builder')
 
-    def __unicode__(self):
+    def __str_(self):
         return self.name
 
 class Version(models.Model):
@@ -42,7 +42,7 @@ class Version(models.Model):
         ordering = ('-date',)
         unique_together = ('flavor', 'build')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     @property
@@ -52,18 +52,18 @@ class Version(models.Model):
 
         download_file = os.path.join(self.flavor.download_root, build_number, filename)
         if os.path.exists(download_file):
-            download_url = os.path.join(self.flavor.download_path, build_number, urllib.quote(filename))
+            download_url = os.path.join(self.flavor.download_path, build_number, urllib.parse.quote(filename))
             return download_url
 
         download_file = os.path.join(self.flavor.download_root, self.build.revision, build_number, filename)
         if os.path.exists(download_file):
-            download_url = os.path.join(self.flavor.download_path, self.build.revision, build_number, urllib.quote(filename))
+            download_url = os.path.join(self.flavor.download_path, self.build.revision, build_number, urllib.parse.quote(filename))
             return download_url
 
         for change in self.build.changes.all():
             download_file = os.path.join(self.flavor.download_root, change.revision, build_number, filename)
             if os.path.exists(download_file):
-                download_url = os.path.join(self.flavor.download_path, change.revision, build_number, urllib.quote(filename))
+                download_url = os.path.join(self.flavor.download_path, change.revision, build_number, urllib.parse.quote(filename))
                 return download_url
 
         return None
