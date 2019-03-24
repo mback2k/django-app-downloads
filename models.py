@@ -27,7 +27,7 @@ class Flavor(models.Model):
         ordering = ('name',)
         unique_together = ('application', 'builder')
 
-    def __str_(self):
+    def __str__(self):
         return self.name
 
 class Version(models.Model):
