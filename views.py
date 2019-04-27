@@ -2,6 +2,7 @@
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required, permission_required
+from django.views.decorators.cache import cache_control
 from django.views.decorators.http import condition
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, Http404
 from django.template import RequestContext
@@ -26,10 +27,11 @@ def show_downloads_etag(request, filter='stable'):
         return None
     try:
         application, flavor, versions = show_downloads_latest(request, filter)
-        etag = '%d:%d:%d:%d' % (application.id,
-                                flavor.id,
-                                versions.count(),
-                                versions.latest('date').id)
+        etag = '%d:%d:%d:%d:%d' % (application.id,
+                                   flavor.id,
+                                   versions.count(),
+                                   versions.latest('date').id,
+                                   os.path.getmtime(__file__))
         if request.user.is_authenticated():
             etag += ':%d' % request.user.id
         if filter:
@@ -52,6 +54,7 @@ def show_downloads_last_modified(request, filter='stable'):
     except Version.DoesNotExist:
         return None
 
+@cache_control(private=True, must_revalidate=True)
 @condition(etag_func=show_downloads_etag, last_modified_func=show_downloads_last_modified)
 def show_downloads(request, filter='stable'):
     application, flavor, versions = show_downloads_latest(request, filter)
